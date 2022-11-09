@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-PREFIX = 'djangosaml2idp:'
+PREFIX = "djangosaml2idp:"
 
 
 # We only really need to test one, because if the urls integration works in general, it will work for all specified urls.

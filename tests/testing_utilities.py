@@ -5,7 +5,7 @@ def mocked_requests_get(*args, **kwargs):
             self.text = text
             self.status_code = status_code
 
-    if args[0] == 'http://not_found':
-        return MockResponse('not found', 404)
+    if args[0] == "http://not_found":
+        return MockResponse("not found", 404)
 
-    return MockResponse('ok', 200)
+    return MockResponse("ok", 200)

@@ -11,29 +11,59 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('djangosaml2idp', '0001_initial'),
+        ("djangosaml2idp", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PersistentId',
+            name="PersistentId",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('persistent_id', models.UUIDField(default=uuid.uuid4, verbose_name='User Persistent Id for this SP')),
-                ('created', models.DateTimeField(default=django.utils.timezone.now)),
-                ('sp', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='djangosaml2idp.ServiceProvider')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "persistent_id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        verbose_name="User Persistent Id for this SP",
+                    ),
+                ),
+                ("created", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "sp",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="djangosaml2idp.ServiceProvider",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Persistent Id',
+                "verbose_name": "Persistent Id",
             },
         ),
         migrations.AddConstraint(
-            model_name='persistentid',
-            constraint=models.UniqueConstraint(fields=('sp', 'persistent_id'), name='unique_ids_per_sp'),
+            model_name="persistentid",
+            constraint=models.UniqueConstraint(
+                fields=("sp", "persistent_id"), name="unique_ids_per_sp"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='persistentid',
-            constraint=models.UniqueConstraint(fields=('sp', 'user'), name='unique_users_per_sp'),
+            model_name="persistentid",
+            constraint=models.UniqueConstraint(
+                fields=("sp", "user"), name="unique_users_per_sp"
+            ),
         ),
     ]
