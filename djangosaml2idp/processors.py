@@ -148,7 +148,26 @@ class BaseProcessor:
         results = {}
         for user_attr, out_attr in sp_attribute_mapping.items():
             if hasattr(user, user_attr):
-                attr = getattr(user, user_attr)
+                # SPK-specific logic to take the mirrored agent's user info if
+                # in mirroring mode.
+                if (
+                    hasattr(user, "userprofile")  # has Spark user profile
+                    and user_attr  # the attr is one of the three we care about
+                    in [
+                        "email",
+                        "first_name",
+                        "last_name",
+                    ]
+                    and user.userprofile.is_spark_user  # and is a Spark user
+                    and user.userprofile.associated_agent  # who is in mirroring mode
+                ):
+                    logger.debug(f"Using associated_agent's {user_attr} instead")
+                    attr = getattr(
+                        user.userprofile.associated_agent.principal, user_attr
+                    )
+                else:
+                    attr = getattr(user, user_attr)
+
                 results[out_attr] = attr() if callable(attr) else attr
         return results
 
